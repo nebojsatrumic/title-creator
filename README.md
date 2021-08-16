@@ -13,7 +13,6 @@ Some additional commands that are frequently used in development are:
 
 - `npm test` run unit tests
 - `npm test:integration` run integration tests
-- `npm run lint` check for lint errors
 - `npm run start-web:dev` monitor for any changes and automatically restart the server
 - `npm run build` build for production
 - `npm start-web` start production ready code
@@ -26,7 +25,7 @@ Common configuration variables are listed here. For all variables see the [.env.
 | Variable                      |             Values              |  Default value  | Description                                                              |
 | ----------------------------- | :-----------------------------: | :-------------: | ------------------------------------------------------------------------ |
 | NODE_ENV                      | `"development" or "production"` | `"development"` | Specifies the environment in which the service is running                |
-| PORT                          |           `<number>`            |     `4000`      | Specifies the port on which the server is running                        |
+| PORT                          |           `<number>`            |     `4100`      | Specifies the port on which the server is running                        |
 | MQ_WEB_SERVER_PORT            |           `<number>`            |     `4010`      | Specifies the port on which the web server for MQ is running             |
 | DB_HOST                       |           `<string>`            |  `"localhost"`  | Specifies the database hostname                                          |
 | DB_PORT                       |           `<number>`            |     `5432`      | Specifies the database port                                              |
