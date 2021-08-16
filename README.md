@@ -44,6 +44,20 @@ Common configuration variables are listed here. For all variables see the [.env.
 | CONNECT_RETRY_COUNT           |           `<number>`            |      `10`       | Specifies the number of retries for connecting to rabbitmq               |
 | SERVICE_VERSION               |           `<string>`            |    `v1.0.0`     | Specifies the version of the service that was deployed                   |
 
+## Running in docker
+
+Make file is included:
+
+- `make run` - will build and run docker images of the project
+- `make run-test` - will build and run docker images with tests execution
+- `make kill` - will stop and remove docker containers that were created with run command
+- `make kill-test` - will stop and remove docker containers that were created with run-test command
+
+Part from make file there are 2 docker compose files that can be used to create and run images:
+
+- `docker-compose.yml`
+- `docker-comopse.test.yml`
+
 ## Database migrations
 
 We use sequelize cli (https://github.com/sequelize/cli) for generating and executing database migrations. Make sure you have exported database environment variables when running commands. Commands you will need:
@@ -60,7 +74,7 @@ To increment major version, create a new tag manually.
 
 ## API documentation
 
-API documentation is generated at [http://localhost:4000/](http://localhost:4000/)
+API documentation is generated at [http://localhost:4100/](http://localhost:4100/)
 
 We use [hapi-swagger](https://github.com/glennjones/hapi-swagger) plugin for writing API documentation. API is documented while we are defining the routes.
 Tag each route with `tags: ['api']` in order for it to appear in swagger doc.
