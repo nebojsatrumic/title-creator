@@ -1,0 +1,45 @@
+# Logs
+logs
+*.log
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules/
+
+# TypeScript v1 declaration files
+typings/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# dotenv environment variables file
+.env
+.env.development
+.env.production
+.env.test
+
+# build folder
+build
+
+# test results
+test-results
+
+# storage
+*.sqlite
+
+# other
+.DS_Store
+.idea
+.vscode
+*.iml
+.history
+
+coverage

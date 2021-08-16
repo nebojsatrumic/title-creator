@@ -1,0 +1,106 @@
+version: "3"
+services:
+  postgres:
+    build:
+      dockerfile: postgres.Dockerfile
+    restart: always
+    ports:
+      - "5432:5432"
+    networks:
+      - title_network
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test1234
+      - POSTGRES_DB=title
+
+  rabbitmq:
+    image: "rabbitmq:3.8.17-management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - title_network
+    environment:
+      - RABBITMQ_DEFAULT_USER=test
+      - RABBITMQ_DEFAULT_PASS=test
+
+  title-creator-web:
+    build:
+      dockerfile: ./Dockerfile
+    depends_on:
+      - rabbitmq
+      - postgres
+      - redis
+    environment:
+      # Postgres
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=title
+      - DB_USER=test
+      - DB_PASSWORD=test1234
+      # RabbitMQ
+      - PREFETCH_COUNT=100
+      - RMQ_HOST=rabbitmq
+      - RMQ_PORT=5672
+      - RMQ_USER=test
+      - RMQ_PASSWORD=test
+      - RMQ_PROTOCOL=amqp
+      - CONNECT_RETRY_TIMEOUT=1000
+      - CONNECT_RETRY_COUNT=10
+      - DOCKER_ENV=true
+      - LOG_LEVEL=info
+      - PORT=4100
+      # Redis
+      - REDIS_URL=redis://redis:6379
+    ports:
+      - 4100:4100
+    networks:
+      - title_network
+    restart: on-failure
+
+  title-creator-mq:
+    build:
+      dockerfile: ./mq.Dockerfile
+    depends_on:
+      - rabbitmq
+      - postgres
+      - redis
+    environment:
+      # Postgres
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_DATABASE=title
+      - DB_USER=test
+      - DB_PASSWORD=test1234
+      # RabbitMQ
+      - PREFETCH_COUNT=100
+      - RMQ_HOST=rabbitmq
+      - RMQ_PORT=5672
+      - RMQ_USER=test
+      - RMQ_PASSWORD=test
+      - RMQ_PROTOCOL=amqp
+      - CONNECT_RETRY_TIMEOUT=1000
+      - CONNECT_RETRY_COUNT=10
+      - DOCKER_ENV=true
+      - LOG_LEVEL=info
+      - PORT=4101
+      # Redis
+      - REDIS_URL=redis://redis:6379
+      - OPENAI_API_KEY=**********************POPULATE BEFORE RUNNING************************
+    ports:
+      - 4101:4101
+    networks:
+      - title_network
+    restart: on-failure
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--requirepass redis_password_1234"]
+    networks:
+      - title_network
+
+networks:
+  title_network:
+    name: title_network

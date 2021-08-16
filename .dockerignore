@@ -1,0 +1,13 @@
+# External service configs
+.github
+.idea
+.vscode
+.history
+
+# Git repo
+.git
+
+# Node modules and built code
+node_modules
+build
+

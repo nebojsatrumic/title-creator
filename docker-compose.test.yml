@@ -1,0 +1,71 @@
+version: "3"
+services:
+  postgres_test:
+    build:
+      dockerfile: postgres.Dockerfile
+    restart: always
+    ports:
+      - "5432:5432"
+    networks:
+      - tests
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test1234
+      - POSTGRES_DB=title_test
+
+  rabbitmq:
+    image: "rabbitmq:3.8.17-management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - tests
+    environment:
+      - RABBITMQ_DEFAULT_USER=test
+      - RABBITMQ_DEFAULT_PASS=test
+
+  title-creator-test:
+    build:
+      dockerfile: ./test.Dockerfile
+    depends_on:
+      - rabbitmq
+      - postgres_test
+      - redis
+    environment:
+      # Postgres
+      - DB_HOST=postgres_test
+      - DB_PORT=5432
+      - DB_DATABASE=title_test
+      - DB_USER=test
+      - DB_PASSWORD=test1234
+      # RabbitMQ
+      - PREFETCH_COUNT=100
+      - RMQ_HOST=rabbitmq
+      - RMQ_PORT=5672
+      - RMQ_USER=test
+      - RMQ_PASSWORD=test
+      - RMQ_PROTOCOL=amqp
+      - CONNECT_RETRY_TIMEOUT=1000
+      - CONNECT_RETRY_COUNT=10
+      - DOCKER_ENV=true
+      - LOG_LEVEL=info
+      - PORT=4000
+      # Redis
+      - REDIS_URL=redis://redis:6379
+    ports:
+      - 4003:4003
+    networks:
+      - tests
+    restart: on-failure
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--requirepass redis_password_1234"]
+    networks:
+      - tests
+
+networks:
+  tests:
+    name: tests

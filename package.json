@@ -1,0 +1,70 @@
+{
+  "name": "title-service",
+  "version": "1.0.0",
+  "description": "Service for working with titles",
+  "scripts": {
+    "lint": "tslint -c tslint.json -p tsconfig.json 'app/**/*.ts' --fix",
+    "build": "tsc -p ./",
+    "start-mq": "tsc -p ./ && node --inspect=0.0.0.0:9231 --nolazy --max-old-space-size=2048 ./build/app/message_queue_api/index.js",
+    "start-web": "tsc -p ./ && node --inspect=0.0.0.0:9232 --nolazy --max-old-space-size=2048 ./build/app/web_api/index.js",
+    "start-mq:dev": "npx nodemon -e ts --exec 'npm run start-mq'",
+    "start-web:dev": "npx nodemon -e ts --exec 'npm run start-web'",
+    "clean": "rm -rf ./build",
+    "start:clean-web": "npm run clean && npm run build && npm run start-web",
+    "start:clean-mq": "npm run clean && npm run build && npm run start-mq",
+    "test": "npm run test:all",
+    "test:all": "jest --runInBand -c ./test/jest.config.js",
+    "test:unit": "jest -w 1 -c ./test/jest.config.unit.js",
+    "test:integration": "jest --runInBand -c ./test/jest.config.integration.js",
+    "coverage": "jest  --runInBand --collect-coverage -c ./test/jest.config.js",
+    "prettier-write": "prettier --config .prettierrc 'app/**/*.ts' --write",
+    "prettier-check": "prettier --config .prettierrc 'app/**/*.ts' --check"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "nebojsatrumic@yahoo.com",
+  "homepage": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@hapi/boom": "^9.1.3",
+    "@hapi/hapi": "^20.1.5",
+    "@hapi/inert": "^6.0.3",
+    "@hapi/vision": "^6.1.0",
+    "amqplib": "^0.8.0",
+    "dotenv": "^10.0.0",
+    "hapi": "^18.1.0",
+    "hapi-swagger": "^14.2.4",
+    "ioredis": "^4.27.7",
+    "joi": "^17.4.2",
+    "openai-api": "^1.2.4",
+    "pg": "^8.7.1",
+    "sequelize": "^6.6.5",
+    "tsconfig-paths": "^3.10.1",
+    "umzug": "^2.3.0",
+    "uuidv4": "^6.2.11",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.8.1",
+    "@types/hapi__hapi": "^20.0.9",
+    "@types/hapi__inert": "^5.2.3",
+    "@types/hapi__vision": "^5.5.3",
+    "@types/ioredis": "^4.26.7",
+    "@types/jest": "^26.0.24",
+    "@types/node": "^16.6.1",
+    "@types/pg": "^8.6.1",
+    "@types/umzug": "^2.3.2",
+    "@types/validator": "^13.6.3",
+    "jest": "^27.0.6",
+    "sequelize-cli": "^6.2.0",
+    "ts-jest": "^27.0.4",
+    "typescript": "^4.3.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier-check && npm run lint"
+    }
+  }
+}

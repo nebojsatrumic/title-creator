@@ -1,0 +1,21 @@
+{
+  "include": ["package.json", "app/**/*", "database/**/*"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "incremental": true,
+    "target": "es2019",
+    "module": "commonjs",
+    "lib": ["es2019"],
+    "allowJs": true,
+    "sourceMap": true,
+    "outDir": "./build",
+    "strict": true,
+    "moduleResolution": "node",
+    "baseUrl": "./app",
+    "paths": {
+      "root/*": ["../*"]
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  }
+}
